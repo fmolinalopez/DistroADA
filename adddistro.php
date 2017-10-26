@@ -1,19 +1,10 @@
 <?php
 include_once 'config.php';
 include_once 'connectDB.php';
+include_once 'helpers.php';
 
 // Creada variable error por si en el futuro añadimos errores en el formulario
 $errors = [];
-
-// Funcion que convierte los elementos de un array a un string,
-// separando con comas cada elemento.
-function arrayToString($array){
-    $string = "";
-    foreach ($array as $item => $value){
-        $string = $string . $value . ", ";
-    }
-    return trim($string, ', ');
-}
 
 if (!empty($_POST)){
     $nombre = htmlspecialchars(trim($_POST['nombre']));

@@ -51,7 +51,7 @@ $row = $queryResult->fetch(PDO::FETCH_ASSOC);
     <ul>
         <li><h3>Os type: <?=$row['ostype']; ?></h3></li>
         <li><h3>Basado en: <?=$row['basadoen']; ?></h3></li>
-        <li><h3>Basado en: <?=$row['basadoen']; ?></h3></li>
+        <li><h3>Origen: <?=$row['origen']; ?></h3></li>
         <li><h3>Arquitectura: <?=$row['arquitectura']; ?></h3></li>
         <li><h3>Escritorio: <?=$row['escritorio']; ?></h3></li>
         <li><h3>Categoría: <?=$row['categoria']; ?></h3></li>

@@ -16,15 +16,41 @@ function arrayToString($array){
 }
 
 if (!empty($_POST)){
-    $nombre = $_POST['nombre'];
-    $ostype = $_POST['ostype'];
-    $basadoen = arrayToString($_POST['basadoen']);
-    $origen = $_POST['origen'];
-    $arquitectura = arrayToString($_POST['arquitectura']);
-    $escritorio = $_POST['escritorio'];
-    $categoria = arrayToString($_POST['categoria']);
+    $nombre = htmlspecialchars(trim($_POST['nombre']));
+    $ostype = $_POST['ostype'] ?? "";
+    $basadoen = $_POST['basadoen'] ?? array();
+    $origen = $_POST['origen'] ?? "";
+    $arquitectura = $_POST['arquitectura'] ?? array();
+    $escritorio = $_POST['escritorio'] ?? array();
+    $categoria = $_POST['categoria'] ?? array();
+
+    if ($nombre === "" ){
+        $errors['name']['required'] = 'Debes introducir un nombre';
+    }
+    if ($ostype === ""){
+        $errors['osType']['required'] = 'Debes seleccionar un sistema operativo';
+    }
+    if (!isset($_POST['basadoen'])){
+        $errors['basedOn']['required'] = 'Debes seleccionar al menos un elemento';
+    }
+    if ($origen === ""){
+        $errors['origin']['required'] = 'Debes seleccionar un lugar de origen';
+    }
+    if (!isset($_POST['arquitectura'])){
+        $errors['arch']['required'] = 'Debes seleccionar al menos una arquitectura';
+    }
+    if (!isset($_POST['escritorio'])){
+        $errors['desktop']['required'] = 'Debes seleccionar al menos un escritorio';
+    }
+    if (!isset($_POST['categoria'])){
+        $errors['category']['required'] = 'Debes seleccionar al menos una categoria';
+    }
 
     if (empty($errors)){
+        $basadoen = arrayToString($basadoen);
+        $arquitectura = arrayToString($arquitectura);
+        $escritorio = arrayToString($escritorio);
+        $categoria = arrayToString($categoria);
 
         $sql = "INSERT INTO `distroinfo` (`id`, `nombre`, `ostype`, `basadoen`, `origen`, `arquitectura`, `escritorio`, `categoria`) VALUES (NULL, :nombre, :ostype, :basadoen, :origen, :escritorio, :arquitectura, :categoria)";
 
@@ -84,6 +110,12 @@ if (!empty($_POST)){
             <input class="form-control" type="text" id="nombre" name="nombre" required>
         </div>
 
+        <?php if (isset($errors['name'])): ?>
+            <?php foreach ($errors['name'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <div class="form-group">
             <label for="ostype">Tipo de sistema operativo</label>
             <select class="form-control" name="ostype" id="ostype" required>
@@ -94,10 +126,16 @@ if (!empty($_POST)){
             </select>
         </div>
 
+        <?php if (isset($errors['osType'])): ?>
+            <?php foreach ($errors['osType'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <div class="form-group">
             <label for="basadoen">Basado en</label>
             <select class="form-control" id="basadoen" name="basadoen[]" multiple required>
-                <option value="" disabled selected></option>
+                <option value="" disabled selected </option>
                 <option value="Android">Android</option>
                 <option value="Arch">Arch</option>
                 <option value="CentOS">CentOS</option>
@@ -132,6 +170,12 @@ if (!empty($_POST)){
                 <option value="Zenwalk">Zenwalk</option>
             </select>
         </div>
+
+        <?php if (isset($errors['basedOn'])): ?>
+            <?php foreach ($errors['basedOn'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
         <div class="form-group">
             <label for="origen">Origen</label>
@@ -213,6 +257,12 @@ if (!empty($_POST)){
             </select>
         </div>
 
+        <?php if (isset($errors['origin'])): ?>
+            <?php foreach ($errors['origin'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <div class="form-group">
             <label for="arquitectura">Arquitectura</label>
             <select class="form-control" name="arquitectura[]" id="arquitectura" multiple required>
@@ -289,9 +339,15 @@ if (!empty($_POST)){
             </select>
         </div>
 
+        <?php if (isset($errors['arch'])): ?>
+            <?php foreach ($errors['arch'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <div class="form-group">
             <label for="escritorio">Escritorio</label>
-            <select class="form-control" name="escritorio" id="escritorio" required>
+            <select class="form-control" name="escritorio[]" id="escritorio" multiple required>
                 <option value="" disabled selected></option>
                 <option value="No desktop">No desktop</option>
                 <option value="AfterStep">AfterStep</option>
@@ -347,6 +403,12 @@ if (!empty($_POST)){
             </select>
         </div>
 
+        <?php if (isset($errors['desktop'])): ?>
+            <?php foreach ($errors['desktop'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <div class="form-group">
             <label for="categoria">Categoria</label>
             <select class="form-control" id="categoria" name="categoria[]" multiple required>
@@ -380,6 +442,12 @@ if (!empty($_POST)){
                 <option value="Thin Client">Thin Client</option>
             </select>
         </div>
+
+        <?php if (isset($errors['category'])): ?>
+            <?php foreach ($errors['category'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
         <div class="form-group">
             <input class="btn btn-success" type="submit" value="Añadir">

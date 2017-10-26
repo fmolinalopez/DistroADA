@@ -17,35 +17,60 @@ function arrayToString($array){
 }
 
 if (!empty($_POST)){
-    $nombre = $_POST['nombre'];
-    $ostype = $_POST['ostype'];
-    $basadoen = arrayToString($_POST['basadoen']);
-    $origen = $_POST['origen'];
-    $arquitectura = arrayToString($_POST['arquitectura']);
-    $escritorio = $_POST['escritorio'];
-    $categoria = arrayToString($_POST['categoria']);
+    $nombre = htmlspecialchars(trim($_POST['nombre']));
+    $ostype = $_POST['ostype'] ?? "";
+    $basadoen = $_POST['basadoen'] ?? array();
+    $origen = $_POST['origen'] ?? "";
+    $arquitectura = $_POST['arquitectura'] ?? array();
+    $escritorio = $_POST['escritorio'] ?? array();
+    $categoria = $_POST['categoria'] ?? array();
     $id = $_POST['id'];
 
-    echo $nombre.$ostype.$basadoen;
-    //if (empty($errors)){
+    if ($nombre === "" ){
+        $errors['name']['required'] = 'Debes introducir un nombre';
+    }
+    if ($ostype === ""){
+        $errors['osType']['required'] = 'Debes seleccionar un sistema operativo';
+    }
+    if (!isset($_POST['basadoen'])){
+        $errors['basedOn']['required'] = 'Debes seleccionar al menos un elemento';
+    }
+    if ($origen === ""){
+        $errors['origin']['required'] = 'Debes seleccionar un lugar de origen';
+    }
+    if (!isset($_POST['arquitectura'])){
+        $errors['arch']['required'] = 'Debes seleccionar al menos una arquitectura';
+    }
+    if (!isset($_POST['escritorio'])){
+        $errors['desktop']['required'] = 'Debes seleccionar al menos un escritorio';
+    }
+    if (!isset($_POST['categoria'])){
+        $errors['category']['required'] = 'Debes seleccionar al menos una categoria';
+    }
 
-    $sql = "UPDATE distroinfo SET nombre = :nombre, ostype = :ostype, basadoen = :basadoen, origen = :origen, escritorio = :escritorio, arquitectura = :arquitectura, categoria = :categoria WHERE id = :id";
+    if (empty($errors)){
+        $basadoen = arrayToString($basadoen);
+        $arquitectura = arrayToString($arquitectura);
+        $escritorio = arrayToString($escritorio);
+        $categoria = arrayToString($categoria);
 
-    $result = $pdo->prepare($sql);
+        $sql = "UPDATE distroinfo SET nombre = :nombre, ostype = :ostype, basadoen = :basadoen, origen = :origen, escritorio = :escritorio, arquitectura = :arquitectura, categoria = :categoria WHERE id = :id";
 
-    $result->execute([
-        'nombre' => $nombre,
-        'ostype' => $ostype,
-        'basadoen' => $basadoen,
-        'origen' => $origen,
-        'arquitectura' => $arquitectura,
-        'escritorio' => $escritorio,
-        'categoria' => $categoria,
-        'id' => $id,
-    ]);
+        $result = $pdo->prepare($sql);
 
-    header('Location: index.php');
-    //}
+        $result->execute([
+            'nombre' => $nombre,
+            'ostype' => $ostype,
+            'basadoen' => $basadoen,
+            'origen' => $origen,
+            'arquitectura' => $arquitectura,
+            'escritorio' => $escritorio,
+            'categoria' => $categoria,
+            'id' => $id,
+        ]);
+
+        header('Location: index.php');
+    }
 
 }else {
     $distro = dameDistro($pdo, $id);
@@ -100,8 +125,14 @@ function dameDistro($pdo, $id){
         <input type="hidden" name="id" value="<?=$distro['id']?>">
         <div class="form-group">
             <label for="nombre">Nombre de la distribucion</label>
-            <input class="form-control" type="text" id="nombre" name="nombre" value="<?=$distro['nombre']; ?>" required>
+            <input class="form-control" type="text" id="nombre" name="nombre" value="<?php if (empty($errors)) {echo $distro['nombre'];} ?>" required>
         </div>
+
+        <?php if (isset($errors['name'])): ?>
+            <?php foreach ($errors['name'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
         <div class="form-group">
             <label for="ostype">Tipo de sistema operativo</label>
@@ -112,6 +143,12 @@ function dameDistro($pdo, $id){
                 <option value="Linux/bsd">Linux, BSD</option>
             </select>
         </div>
+
+        <?php if (isset($errors['osType'])): ?>
+            <?php foreach ($errors['osType'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
         <div class="form-group">
             <label for="basadoen">Basado en</label>
@@ -151,6 +188,12 @@ function dameDistro($pdo, $id){
                 <option value="Zenwalk">Zenwalk</option>
             </select>
         </div>
+
+        <?php if (isset($errors['basedOn'])): ?>
+            <?php foreach ($errors['basedOn'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
         <div class="form-group">
             <label for="origen">Origen</label>
@@ -232,6 +275,12 @@ function dameDistro($pdo, $id){
             </select>
         </div>
 
+        <?php if (isset($errors['origin'])): ?>
+            <?php foreach ($errors['origin'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <div class="form-group">
             <label for="arquitectura">Arquitectura</label>
             <select class="form-control" name="arquitectura[]" id="arquitectura" multiple required>
@@ -308,9 +357,15 @@ function dameDistro($pdo, $id){
             </select>
         </div>
 
+        <?php if (isset($errors['arch'])): ?>
+            <?php foreach ($errors['arch'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <div class="form-group">
             <label for="escritorio">Escritorio</label>
-            <select class="form-control" name="escritorio" id="escritorio" required>
+            <select class="form-control" name="escritorio[]" id="escritorio" multiple required>
                 <option value="" disabled selected></option>
                 <option value="No desktop">No desktop</option>
                 <option value="AfterStep">AfterStep</option>
@@ -366,6 +421,12 @@ function dameDistro($pdo, $id){
             </select>
         </div>
 
+        <?php if (isset($errors['desktop'])): ?>
+            <?php foreach ($errors['desktop'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <div class="form-group">
             <label for="categoria">Categoria</label>
             <select class="form-control" id="categoria" name="categoria[]" multiple required>
@@ -399,6 +460,12 @@ function dameDistro($pdo, $id){
                 <option value="Thin Client">Thin Client</option>
             </select>
         </div>
+
+        <?php if (isset($errors['category'])): ?>
+            <?php foreach ($errors['category'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
         <div class="form-group">
             <input class="btn btn-success" type="submit" value="Añadir">

@@ -13,7 +13,7 @@ $queryResult = $pdo->query("SELECT id, nombre from distroinfo");
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>DistroAda</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="appCss/app.css">
 </head>
 <body>
 
@@ -53,18 +53,17 @@ $queryResult = $pdo->query("SELECT id, nombre from distroinfo");
             <tr>
                 <td><?= $row['id']; ?></td>
                 <td><?= $row['nombre']; ?></td>
-                <td>
-                    <form action="listdistroinfo.php" method="post">
-                        <input type="hidden" name="lista" value="<?=$row['id']; ?>">
-                        <input class="btn btn-primary" type="submit" value="Info">
-                    </form>
+                <td><a href="listdistroinfo.php?id=<?=$row['id']?>" class="listar">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </a>
                 </td>
-                <td><a href="editdistro.php?id=<?=$row['id']?>" class="btn btn-warning">Editar</a></td>
-                <td>
-                    <form action="deletedistro.php" method="post">
-                        <input type="hidden" name="deletedistro" value="<?=$row['id']; ?>">
-                        <input class="btn btn-danger" type="submit" value="Borrar">
-                    </form>
+                <td><a href="editdistro.php?id=<?=$row['id']?>" class="editar">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </a>
+                </td>
+                <td><a href="deletedistro.php?id=<?=$row['id'];?>" class="borrar">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
                 </td>
             </tr>
         <?php endwhile; ?>

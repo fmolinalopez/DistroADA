@@ -73,7 +73,7 @@ if (!empty($_POST)){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>DistroADA</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="appCss/app.css">
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">

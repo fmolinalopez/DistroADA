@@ -1,0 +1,15 @@
+body {
+    padding-top: 50px;
+}
+
+.borrar{
+    color: red;
+}
+
+.editar{
+    color: orange;
+}
+
+.listar{
+    color: blue;
+}

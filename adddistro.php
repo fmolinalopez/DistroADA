@@ -5,6 +5,7 @@ include_once 'helpers.php';
 
 // Creada variable error por si en el futuro añadimos errores en el formulario
 $errors = [];
+$error = false;
 
 if (!empty($_POST)){
     $nombre = htmlspecialchars(trim($_POST['nombre']));
@@ -43,7 +44,7 @@ if (!empty($_POST)){
         $escritorio = arrayToString($escritorio);
         $categoria = arrayToString($categoria);
 
-        $sql = "INSERT INTO `distroinfo` (`id`, `nombre`, `ostype`, `basadoen`, `origen`, `arquitectura`, `escritorio`, `categoria`) VALUES (NULL, :nombre, :ostype, :basadoen, :origen, :escritorio, :arquitectura, :categoria)";
+        $sql = "INSERT INTO `distroinfo` (`id`, `nombre`, `ostype`, `basadoen`, `origen`, `arquitectura`, `escritorio`, `categoria`, created_at) VALUES (NULL, :nombre, :ostype, :basadoen, :origen, :escritorio, :arquitectura, :categoria, NOW())";
 
         $result = $pdo->prepare($sql);
 
@@ -58,6 +59,8 @@ if (!empty($_POST)){
         ]);
 
         header('Location: index.php');
+    }else {
+        $error = true;
     }
 }
 ?>
@@ -98,7 +101,7 @@ if (!empty($_POST)){
     <form action="adddistro.php" method="post">
         <div class="form-group">
             <label for="nombre">Nombre de la distribucion</label>
-            <input class="form-control" type="text" id="nombre" name="nombre" required>
+            <input class="form-control" type="text" id="nombre" name="nombre" value="<?=$error?$nombre:"";?>" required>
         </div>
 
         <?php if (isset($errors['name'])): ?>
@@ -109,7 +112,7 @@ if (!empty($_POST)){
 
         <div class="form-group">
             <label for="ostype">Tipo de sistema operativo</label>
-            <select class="form-control" name="ostype" id="ostype" required>
+            <select class="form-control" name="ostype" id="ostype"  >
                 <option value="" disabled selected></option>
                 <option value="Linux">Linux</option>
                 <option value="Bsd">BSD</option>

@@ -45,7 +45,7 @@ if (!empty($_POST)){
         $escritorio = arrayToString($escritorio);
         $categoria = arrayToString($categoria);
 
-        $sql = "UPDATE distroinfo SET nombre = :nombre, ostype = :ostype, basadoen = :basadoen, origen = :origen, escritorio = :escritorio, arquitectura = :arquitectura, categoria = :categoria WHERE id = :id";
+        $sql = "UPDATE distroinfo SET nombre = :nombre, ostype = :ostype, basadoen = :basadoen, origen = :origen, escritorio = :escritorio, arquitectura = :arquitectura, categoria = :categoria, updated_at = NOW() WHERE id = :id";
 
         $result = $pdo->prepare($sql);
 

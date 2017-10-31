@@ -3,18 +3,14 @@
 include_once 'config.php';
 include_once 'connectDb.php';
 
-$id = $_POST['deletedistro'];
+$id = $_REQUEST['deletedistro'];
 
-print_r($id);
-
-$sql = "DELETE FROM `distroinfo` WHERE `id` = :valor LIMIT 1";
-
-print_r($sql);
+$sql = "DELETE FROM `distroinfo` WHERE `id` = :id LIMIT 1";
 
 $result = $pdo->prepare($sql);
 
 $result->execute([
-    'valor' => $id
+    'id' => $id
 ]);
 
 

@@ -8,3 +8,25 @@ function arrayToString($array){
     }
     return trim($string, ', ');
 }
+
+function generarSelect($listaValores, $seleccionado, $name, $multiple = false){
+    $salida = "";
+
+    if ($multiple){
+        $salida .="<select class='form-control' name='$name' id='$name' multiple>";
+    }else{
+        $salida .="<select class='form-control' name='$name' id='$name'>";
+    }
+
+    foreach ($listaValores as $valor){
+        if (in_array($valor, $seleccionado)){
+            $salida .="<option value='{$valor}' selected>{$valor}</option>";
+        }else {
+            $salida .="<option value='{$valor}'>{$valor}</option>";
+        }
+    }
+
+    $salida .="</select>";
+
+    return $salida;
+}

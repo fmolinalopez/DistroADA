@@ -2,6 +2,7 @@
 include_once 'config.php';
 include_once 'connectDB.php';
 include_once 'helpers.php';
+include_once 'arrays.php';
 
 // Creada variable error por si en el futuro añadimos errores en el formulario
 $errors = [];
@@ -117,12 +118,7 @@ if (!empty($_POST)){
 
         <div class="form-group">
             <label for="ostype">Tipo de sistema operativo</label>
-            <select class="form-control" name="ostype" id="ostype"  >
-                <option value="" disabled selected></option>
-                <option value="Linux">Linux</option>
-                <option value="Bsd">BSD</option>
-                <option value="Linux/bsd">Linux, BSD</option>
-            </select>
+            <?=generarSelect($ostypeList, [$ostype ?? ""], "ostype", false)?>
         </div>
 
         <?php if (isset($errors['osType'])): ?>

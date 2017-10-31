@@ -55,6 +55,7 @@ $row = $queryResult->fetch(PDO::FETCH_ASSOC);
         <li><h3>Arquitectura: <?=$row['arquitectura']; ?></h3></li>
         <li><h3>Escritorio: <?=$row['escritorio']; ?></h3></li>
         <li><h3>Categoría: <?=$row['categoria']; ?></h3></li>
+        <li><h3>Descripción: <?=$row['descripcion']; ?></h3></li>
     </ul>
 </div>
 </body>

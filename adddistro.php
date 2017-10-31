@@ -15,6 +15,7 @@ if (!empty($_POST)){
     $arquitectura = $_POST['arquitectura'] ?? array();
     $escritorio = $_POST['escritorio'] ?? array();
     $categoria = $_POST['categoria'] ?? array();
+    $descripcion = htmlspecialchars(trim($_POST['descripcion']));
 
     if ($nombre === "" ){
         $errors['name']['required'] = 'Debes introducir un nombre';
@@ -37,6 +38,9 @@ if (!empty($_POST)){
     if (!isset($_POST['categoria'])){
         $errors['category']['required'] = 'Debes seleccionar al menos una categoria';
     }
+    if ($descripcion === ""){
+        $errors['description']['required'] = 'Debes introducir una descripcion';
+    }
 
     if (empty($errors)){
         $basadoen = arrayToString($basadoen);
@@ -44,7 +48,7 @@ if (!empty($_POST)){
         $escritorio = arrayToString($escritorio);
         $categoria = arrayToString($categoria);
 
-        $sql = "INSERT INTO `distroinfo` (`id`, `nombre`, `ostype`, `basadoen`, `origen`, `arquitectura`, `escritorio`, `categoria`, created_at) VALUES (NULL, :nombre, :ostype, :basadoen, :origen, :escritorio, :arquitectura, :categoria, NOW())";
+        $sql = "INSERT INTO `distroinfo` (`id`, `nombre`, `ostype`, `basadoen`, `origen`, `arquitectura`, `escritorio`, `categoria`, `descripcion`, created_at) VALUES (NULL, :nombre, :ostype, :basadoen, :origen, :escritorio, :arquitectura, :categoria, :descripcion, NOW())";
 
         $result = $pdo->prepare($sql);
 
@@ -56,6 +60,7 @@ if (!empty($_POST)){
             'arquitectura' => $arquitectura,
             'escritorio' => $escritorio,
             'categoria' => $categoria,
+            'descripcion' => $descripcion,
         ]);
 
         header('Location: index.php');
@@ -439,6 +444,17 @@ if (!empty($_POST)){
 
         <?php if (isset($errors['category'])): ?>
             <?php foreach ($errors['category'] as $clave => $valor): ?>
+                <p class="bg-danger">· <?=$valor;?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+        <div class="form-group">
+            <label for="descripcion">Description</label>
+            <textarea class="form-control" name="descripcion" id="descripcion" rows="5" value="<?=$error?$descripcion:"";?>"></textarea>
+        </div>
+
+        <?php if (isset($errors['description'])): ?>
+            <?php foreach ($errors['description'] as $clave => $valor): ?>
                 <p class="bg-danger">· <?=$valor;?></p>
             <?php endforeach; ?>
         <?php endif; ?>

@@ -3,7 +3,7 @@
 include_once 'config.php';
 include_once 'connectDb.php';
 
-$id = $_REQUEST['deletedistro'];
+$id = $_REQUEST['id'];
 
 $sql = "DELETE FROM `distroinfo` WHERE `id` = :id LIMIT 1";
 

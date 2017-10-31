@@ -12,7 +12,12 @@ function arrayToString($array){
 function generarSelect($listaValores, $seleccionado, $name, $multiple = false){
     $salida = "";
 
+    if ( !is_array($seleccionado)){
+        $seleccionado = explode(",", $seleccionado);
+    }
+
     if ($multiple){
+        $name = $name . "[]";
         $salida .="<select class='form-control' name='$name' id='$name' multiple>";
     }else{
         $salida .="<select class='form-control' name='$name' id='$name'>";

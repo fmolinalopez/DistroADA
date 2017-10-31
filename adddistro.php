@@ -118,7 +118,7 @@ if (!empty($_POST)){
 
         <div class="form-group">
             <label for="ostype">Tipo de sistema operativo</label>
-            <?=generarSelect($ostypeList, [$ostype ?? ""], "ostype", false)?>
+            <?=generarSelect($ostypeList, $ostype ?? "", "ostype", false)?>
         </div>
 
         <?php if (isset($errors['osType'])): ?>
@@ -129,41 +129,7 @@ if (!empty($_POST)){
 
         <div class="form-group">
             <label for="basadoen">Basado en</label>
-            <select class="form-control" id="basadoen" name="basadoen[]" multiple required>
-                <option value="" disabled selected </option>
-                <option value="Android">Android</option>
-                <option value="Arch">Arch</option>
-                <option value="CentOS">CentOS</option>
-                <option value="CRUX">CRUX</option>
-                <option value="Debian">Debian</option>
-                <option value="Debian (Stable)">Debian (Stable)</option>
-                <option value="Debian (Testing)">Debian (Testing)</option>
-                <option value="Debian (Unstable)">Debian (Unstable)</option>
-                <option value="Fedora">Fedora</option>
-                <option value="FreeBSD">FreeBSD</option>
-                <option value="Gentoo">Gentoo</option>
-                <option value="Independent">Independent</option>
-                <option value="KDE neon">KDE neon</option>
-                <option value="KNOPPIX">KNOPPIX</option>
-                <option value="LFS">LFS</option>
-                <option value="Mageia">Mageia</option>
-                <option value="Mandriva">Mandriva</option>
-                <option value="Manjaro">Manjaro</option>
-                <option value="OpenBSD">OpenBSD</option>
-                <option value="openSUSE">openSUSE</option>
-                <option value="PCLinuxOS">PCLinuxOS</option>
-                <option value="Puppy">Puppy</option>
-                <option value="Red Hat">Red Hat</option>
-                <option value="rPath">rPath</option>
-                <option value="sidux">sidux</option>
-                <option value="Slackware">Slackware</option>
-                <option value="SliTaz">SliTaz</option>
-                <option value="Solaris">Solaris</option>
-                <option value="Ubuntu">Ubuntu</option>
-                <option value="Ubuntu (LTS)">Ubuntu (LTS)</option>
-                <option value="Tiny Core">Tiny Core</option>
-                <option value="Zenwalk">Zenwalk</option>
-            </select>
+            <?=generarSelect($basedOnList, $basadoen ?? "", "basadoen", true);?>
         </div>
 
         <?php if (isset($errors['basedOn'])): ?>
